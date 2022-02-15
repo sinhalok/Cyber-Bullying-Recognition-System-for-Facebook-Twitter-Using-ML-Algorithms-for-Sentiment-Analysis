@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+    
+<title>SENTIMENT ANALYSIS</title>
+<h1>SENTIMENT ANALYSIS</h1>
+{% endblock %} 
+
+{% block body %} 
+
+<div class = 'tweets'>
+    <form action = '\' method='post'>
+        <input type = 'text' placeholder = 'topic' name = 'search'>
+        <input type = 'submit' value = 'get tweets' name = submit1>
+    </form>
+</div>
+<div class = 'status'>
+    {% if status == 'successfull' %}
+    <h4>{{status}}</h4>
+    <form action = '/show' method = 'GET'>
+        <input type = 'submit' value = 'show tweets' name = 'submit2'>
+    </form>
+    {% if show %}
+    
+    <p> <a href="/pipeline">Pipeline</a> </p>
+    <table class='styled-table'>
+        <thead>
+        <tr>
+            <th>Tweets</th>
+            <th>CreatedAt</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for tweet in tweets %}
+        <tr>
+            <td>{{tweet.tweets}}</td>
+            <td> {{tweet.date}}</td>
+            </td>
+        </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+    {% endif %} 
+    {% else %} 
+    <h4>{{status}}</h4>
+    {% endif %}
+</div>
+
+{% endblock %} 

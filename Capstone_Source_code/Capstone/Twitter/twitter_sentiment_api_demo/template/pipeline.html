@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+
+<title>SENTIMENT ANALYSIS</title>
+
+<h2>MODEL PIPELINE</h2>
+{% endblock %} 
+
+{% block body %}
+<div id='form'>
+    <p>click the below buttons to see the results as per your requirement</p>
+    <form action = '/pipeline'>
+        <select name="pipeline" multiple>
+            <option value="">--Please choose an option--</option>
+            <option value="cleaned_tweets">cleaned tweeets</option>
+            <option value="sentiment_score">sentiment score</option>
+            <option value="sentiment">sentiment</option>
+          </select>
+    </form>
+    <button id="btn">Get the Selected Index</button>
+</div>
+<div id='tablejs'>
+    <table id='myTable' class='styled-table' style="display:none"></table>
+    <script type = text/javascript defer>
+        var selectedItems = [];
+        var tweets_ = JSON.parse(({{tweets | tojson | safe }}))
+        // var objAssetSelection = JSON.parse(tweets_);
+        // console.log(objAssetSelection);
+        // console.log(typeof(tweets))
+        // var tbl = document.getElementById('myTable');
+        // var tbhead = document.createElement('thead')
+        // tbl.appendChild(tbhead);
+        
+        
+        // tbl.appendChild(tbhead);
+
+        // var row = document.createElement('tr');
+        // tbhead.appendChild(row);
+        
+
+        // var tbb = document.createElement('tbody');
+        // tbl.appendChild(tbb);
+        // var row2  = document.createElement('tr');
+        // tbb.appendChild(row2);
+
+        var btn = document.getElementById('btn')
+        btn.onclick = (event) => {
+            var tbl = document.getElementById('myTable');
+            tbl.style.display = "inline-table";
+            tbl.innerHTML = "";
+        var tbhead = document.createElement('thead')
+        tbl.appendChild(tbhead);
+        
+        
+        tbl.appendChild(tbhead);
+
+        var row = document.createElement('tr');
+        tbhead.appendChild(row);
+        
+
+        var tbb = document.createElement('tbody');
+        tbl.appendChild(tbb);
+            //document.dispatchEvent(new customEvent('reset'));
+
+            select = document.getElementsByName("pipeline")[0];
+            console.log(select);
+        
+        //console.log(tweet['sentiment'])
+        var opts=[];
+        for (var opt of select.options) {
+            if (opt.selected) {
+                console.log([opt]);
+                opts.push(opt);
+            }}
+        console.log(opts);
+
+        opts.forEach(el => {
+            console.log(el);
+            var tbh = document.createElement('th');
+            var column_name = document.createTextNode(el.value);
+            tbh.appendChild(column_name);
+            row.appendChild(tbh);
+        });
+        // for (let opt of opts){
+        //     console.log(opt.value);
+        //     var tbh = document.createElement('th');
+        //     var column_name = document.createTextNode(opt.value);
+        //     tbh.appendChild(column_name);
+        //     row.appendChild(tbh);}
+
+        for (let tweet of tweets_){
+            var row2  = document.createElement('tr');
+            tbb.appendChild(row2);
+            opts.forEach(el => {
+                console.log(el.value);
+                var tbd = document.createElement('td');
+                var txt = document.createTextNode(tweet[el.value]);
+                tbd.appendChild(txt);
+                row2.appendChild(tbd);
+            });
+        //     for (let opt of opts){
+        //         console.log(opt.value);
+        //         var tbd = document.createElement('td');
+        //         var txt = document.createTextNode(tweet[opt.value]);
+        //         tbd.appendChild(txt);
+        //         row2.appendChild(tbd);
+            
+        // }
+        }
+        }
+        ;
+        
+    </script>
+</div>
+{% endblock %}
